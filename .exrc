@@ -1,0 +1,15 @@
+set autoindent
+set autowrite
+set ignorecase
+set redraw
+set report=1
+set ruler
+set showmatch
+set tabstop=4
+set shiftwidth=4
+set terse
+set undodir=${HOME}/tmp
+set warn
+set wrapmargin=5
+set wrapscan
+syntax on
