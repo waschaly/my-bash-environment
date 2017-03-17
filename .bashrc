@@ -35,7 +35,7 @@ case ${OS} in
 
 		case ${ARCH} in
 
-			'armv6l'|'armv7l'|'i686'|'x86_64')
+			'armv6l'|'armv7l'|'i686')
 				GREP=/bin/grep
 				;;
 
