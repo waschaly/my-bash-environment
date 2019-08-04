@@ -1,0 +1,110 @@
+# .profile is read for all login shells
+# all other interactive shells will read .bashrc
+# So read .bashrc also from .profile and make all changes to .bashrc.
+# Then you should always have your correct setup.
+
+test -z "$PROFILEREAD" && . /etc/profile
+
+if [ -f ~/.bashrc ]
+then
+	. ~/.bashrc
+fi
+
+EDITOR=`type -p vim`
+HOSTNAME=`hostname`
+MKDIR=`type -p mkdir`
+SED=`type -p sed`
+TTY=`type -p tty`
+VISUAL=`type -p vim`
+
+case $SHELL in
+
+	/bin/bash)
+		PS1='\u@\h: \w \$ '
+		;;
+
+	*)
+		PS1='noshell@${HOSTNAME} $ '
+		;;
+
+esac
+
+_tty=`${TTY} | ${SED} -e 's/\/.*\///g'`
+HISTDIR=$HOME/.history/${HOSTNAME}/`tty | ${SED} -e 's/\/.$//' | ${SED} -e 's/\/.*\///g'`
+if [ ! -d ${HISTDIR} ]
+then
+	${MKDIR} -p ${HISTDIR}
+fi
+HISTFILE=${HISTDIR}/${_tty}
+HISTCONTROL="ignoreboth"
+
+CDPATH=.:$HOME:/var
+PROMPT_DIRTRIM=2
+LESS="eMis"
+LESSHISTFILE="-"
+MAKE=/usr/bin/make
+PAGER=/usr/bin/less
+PATH=$PATH:/sbin:/usr/sbin:$HOME/bin:.
+ORIG_PATH=$PATH
+TMPDIR=/var/tmp
+if [ ! -d ${TMPDIR} ]
+then
+	${MKDIR} -p ${TMPDIR}
+fi
+
+export HISTCONTROL HISTFILE PS1 CDPATH LESS PAGER MAKE TMPDIR LESSHISTFILE 
+export VISUAL EDITOR
+
+###
+##
+# Please configure the following variables as needed
+##
+###
+
+ORACLE_SID=
+ORAENV_ASK=NO
+export ORAENV_ASK ORACLE_SID
+
+. /usr/local/bin/oraenv
+
+EDITFILE=${HOME}/sql/`hostname`_`${TTY} | ${SED} -e 's/\/.*\///g'`
+NLS_DATE_FORMAT='DD.MM.YYYY HH24:MI:SS'
+NLS_LANG='AMERICAN_AMERICA.UTF8'
+NLS_TIMESTAMP_FORMAT='DD.MM.YYYY HH24:MI:SS'
+OPATCH=${ORACLE_HOME}/OPatch
+PATH=$PATH:${ORACLE_HOME}/bin:${OPATCH}
+PERL5LIB=${ORACLE_HOME}/perl/lib/site_perl/5.10.0:${HOME}/src/perl/newsys/lib:${HOME}/perllib
+
+if [ ! -d ${HOME}/sql ]
+then 
+	${MKDIR} ${HOME}/sql
+fi
+SQLPATH=${SQLPATH}:${HOME}/sql:/oracle/script/sql:${ORACLE_HOME}/apex
+ORACLE_PATH=${HOME}/sql
+
+# LD_LIBRARY_PATH=${ORACLE_HOME}/lib:${ORACLE_HOME}/perl/lib/site_perl/5.10.0/i686-linux-thread-multi
+
+export EDITFILE NLS_LANG NLS_DATE_FORMAT NLS_TIMESTAMP_FORMAT PROMPT_DIRTRIM
+export SQLPATH PERL5LIB LD_LIBRARY_PATH
+export ORACLE_INSTANCE ORACLE_PATH
+
+###
+##
+#  Oracle JAVA stuff 
+##
+###
+
+CLASSPATH=${ORACLE_HOME}/owb/wf/lib/ojdbc14.jar:$ORACLE_HOME/jlib/orai18n.jar
+CLASSPATH=${CLASSPATH}:$ORACLE_HOME/jdbc/lib/ojdbc5.jar:$ORACLE_HOME/jdbc/lib/ojdbc6.jar:.
+
+export CLASSPATH
+
+###
+##
+#  Sprach- und Kodierungssettings
+##
+###
+unset LANG
+export LC_ALL="en_US.UTF-8"
+
+# test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"

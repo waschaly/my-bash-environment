@@ -1,0 +1,41 @@
+set desc depth all
+set editfile $EDITFILE
+set feedback 1
+set lines 160
+set long 2000000000
+set null <NULL>
+set numformat 999999999999
+set numwidth 18
+set pages 9999
+set serveroutput on
+set sqlnumber OFF
+set sqlprompt "&_user@&_CONNECT_IDENTIFIER> "
+set time on
+set timing on
+
+define _editor=/usr/bin/vim
+
+COLUMN AVERAGE_WAIT		FORMAT 999999999999
+COLUMN CLASS 			FORMAT A15
+COLUMN ENCRYPT_IN_BACKUP 	FORMAT A6
+COLUMN EVENT			FORMAT A30
+COLUMN HOST_NAME 		FORMAT A20
+COLUMN NAME 			FORMAT A40
+COLUMN OBJECT_NAME 		FORMAT A40
+COLUMN PARAMETER		FORMAT A40
+COLUMN REASON 			FORMAT A30
+COLUMN TIME_WAITED		FORMAT 999999999999
+COLUMN TOTAL_TIMEOUTS		FORMAT 999999999
+COLUMN TOTAL_WAITS		FORMAT 999999999
+COLUMN VALUE			FORMAT A40
+
+COLUMN PROFILE 			FORMAT A30
+COLUMN RESOURCE_NAME		FORMAT A30
+COLUMN LIMIT			FORMAT A30
+
+-- Java Development stuff
+
+set serveroutput on size 5000
+CALL dbms_java.set_output(5000);
+
+-- vim:ts=8 sw=8
